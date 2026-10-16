@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import type { TimeSeriesData } from "@/types";
+import type { TimeSeriesData } from "../../types";
 
 interface TimeSeriesChartProps {
   data: TimeSeriesData | null;

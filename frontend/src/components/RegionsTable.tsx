@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { CountryEntry, RegionData } from "@/types";
+import type { CountryEntry, RegionData } from "../types";
 
 interface RegionsTableProps {
   originRegions: (RegionData | CountryEntry)[];

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { World, type GlobeConfig } from "./ui/Globe";
 import { getCountryCoord } from "../data/countryCoordinates";
-import type { CountryEntry, RegionData } from "@/types";
+import type { CountryEntry, RegionData } from "../types";
 
 interface GlobeSectionProps {
   originCountries: (RegionData | CountryEntry)[];

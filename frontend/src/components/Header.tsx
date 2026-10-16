@@ -1,4 +1,4 @@
-import type { DataStatus } from "@/types";
+import type { DataStatus } from "../types";
 
 interface HeaderProps {
   dataStatus: DataStatus | null;
