@@ -90,9 +90,19 @@ async def _make_request(endpoint: str, params: dict | None = None) -> dict | Non
     return None
 
 
+def _normalize_date_range(date_range: str) -> str:
+    """Map common UI aliases to Cloudflare Radar dateRange values."""
+    if date_range in ("24h", "24H", "1d"):
+        return "1d"
+    if date_range in ("28d", "30d", "1m"):
+        return "28d"
+    return date_range
+
+
 async def fetch_threat_summary(date_range: str = "7d") -> ThreatSummary:
     """Fetch and normalize DDoS threat summary."""
-    cache_key = f"summary_{date_range}"
+    api_range = _normalize_date_range(date_range)
+    cache_key = f"summary_{api_range}"
     cached = cache.get(cache_key)
     if cached:
         return cached
@@ -102,13 +112,13 @@ async def fetch_threat_summary(date_range: str = "7d") -> ThreatSummary:
     # Fetch protocol summary
     protocol_data = await _make_request(
         "/attacks/layer3/summary/protocol",
-        {"dateRange": date_range, "format": "json"},
+        {"dateRange": api_range, "format": "json"},
     )
 
     # Fetch top origin countries
     origin_data = await _make_request(
         "/attacks/layer3/top/locations/origin",
-        {"dateRange": date_range, "limit": "10", "format": "json"},
+        {"dateRange": api_range, "limit": "10", "format": "json"},
     )
 
     # Fetch top target countries
@@ -193,7 +203,11 @@ async def fetch_threat_summary(date_range: str = "7d") -> ThreatSummary:
 
 async def fetch_timeseries(date_range: str = "7d", agg_interval: str = "1d") -> TimeSeriesData:
     """Fetch and normalize DDoS time-series data."""
-    cache_key = f"timeseries_{date_range}_{agg_interval}"
+    api_range = _normalize_date_range(date_range)
+    if api_range == "1d":
+        agg_interval = "1h"
+
+    cache_key = f"timeseries_{api_range}_{agg_interval}"
     cached = cache.get(cache_key)
     if cached:
         return cached
@@ -202,7 +216,7 @@ async def fetch_timeseries(date_range: str = "7d", agg_interval: str = "1d") -> 
 
     data = await _make_request(
         "/attacks/layer3/timeseries",
-        {"dateRange": date_range, "aggInterval": agg_interval, "format": "json"},
+        {"dateRange": api_range, "aggInterval": agg_interval, "format": "json"},
     )
 
     if not data:
@@ -213,30 +227,28 @@ async def fetch_timeseries(date_range: str = "7d", agg_interval: str = "1d") -> 
 
     # Normalize time-series
     series = []
-    timestamps = data.get("timestamps", [])
-    values = data.get("values", {})
+    timestamps = []
+    value_list = []
 
-    # The API may return values under different keys
-    value_list = None
-    if isinstance(values, dict):
-        # Take the first available series
-        for key in values:
-            if isinstance(values[key], list):
-                value_list = values[key]
+    # Check for Cloudflare Radar serie_0 dictionary structure
+    for key in data:
+        if key.startswith("serie") and isinstance(data[key], dict):
+            timestamps = data[key].get("timestamps", [])
+            value_list = data[key].get("values", [])
+            if timestamps and value_list:
                 break
-    elif isinstance(values, list):
-        value_list = values
 
-    # Fallback: check for series_0 pattern
-    if not value_list:
-        for key in data:
-            if key.startswith("serie") and isinstance(data[key], list):
-                # This might be a list of dicts with timestamps
-                for entry in data[key]:
-                    if isinstance(entry, dict) and "timestamps" in entry:
-                        timestamps = entry["timestamps"]
-                        value_list = entry.get("values", [])
-                        break
+    # Fallback checks
+    if not timestamps:
+        timestamps = data.get("timestamps", [])
+        values = data.get("values", {})
+        if isinstance(values, dict):
+            for key in values:
+                if isinstance(values[key], list):
+                    value_list = values[key]
+                    break
+        elif isinstance(values, list):
+            value_list = values
 
     if timestamps and value_list and len(timestamps) == len(value_list):
         for ts, val in zip(timestamps, value_list):
@@ -261,7 +273,8 @@ async def fetch_timeseries(date_range: str = "7d", agg_interval: str = "1d") -> 
 
 async def fetch_regions(date_range: str = "7d") -> RegionsResponse:
     """Fetch and normalize geographic region data."""
-    cache_key = f"regions_{date_range}"
+    api_range = _normalize_date_range(date_range)
+    cache_key = f"regions_{api_range}"
     cached = cache.get(cache_key)
     if cached:
         return cached
@@ -270,12 +283,12 @@ async def fetch_regions(date_range: str = "7d") -> RegionsResponse:
 
     origin_data = await _make_request(
         "/attacks/layer3/top/locations/origin",
-        {"dateRange": date_range, "limit": "20", "format": "json"},
+        {"dateRange": api_range, "limit": "20", "format": "json"},
     )
 
     target_data = await _make_request(
         "/attacks/layer3/top/locations/target",
-        {"dateRange": date_range, "limit": "20", "format": "json"},
+        {"dateRange": api_range, "limit": "20", "format": "json"},
     )
 
     if not any([origin_data, target_data]):
