@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌐 ThreatLens
+# Lensz
 ### Autonomous Global DDoS Threat Intelligence & 3D Telemetry Platform
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
