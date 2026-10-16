@@ -2,6 +2,9 @@
 .env
 *.env.local
 
+# Project Internal Docs
+docs/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -25,5 +28,5 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Build
+# Build & Logs
 *.log
