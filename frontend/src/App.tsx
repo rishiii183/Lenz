@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Header } from "./components/Header";
 import {
   KPICard,
-  ShieldIcon,
-  ActivityIcon,
-  GlobeIcon,
-  ZapIcon,
+  VolumetricGaugeIcon,
+  OutboundBeaconIcon,
+  IngressTargetIcon,
+  ProtocolVectorIcon,
 } from "./components/KPICard";
 import { GlobeSection } from "./components/GlobeSection";
 import { TimeSeriesChart } from "./components/Charts/TimeSeriesChart";
@@ -50,7 +50,7 @@ export function App() {
 
       {/* Main SOC Dashboard */}
       <main style={{ flex: 1, maxWidth: "1600px", margin: "0 auto", width: "100%" }}>
-        {/* Row 1: KPI Telemetry Cards */}
+        {/* Row 1: KPI Telemetry Cards with Refined Icons */}
         <section className="dashboard-grid">
           <KPICard
             title="DDoS TRAFFIC RATIO"
@@ -61,9 +61,10 @@ export function App() {
             }
             unit={summary?.total_attack_percentage != null ? "%" : undefined}
             subtitle="Observed global malicious traffic share"
-            icon={<ShieldIcon />}
+            icon={<VolumetricGaugeIcon />}
             loading={summaryLoading}
             isMonoValue={true}
+            variant="danger"
           />
 
           <KPICard
@@ -74,8 +75,9 @@ export function App() {
                 ? `${topOrigin.value.toFixed(1)}% of total outbound vectors`
                 : undefined
             }
-            icon={<GlobeIcon />}
+            icon={<OutboundBeaconIcon />}
             loading={summaryLoading}
+            variant="warning"
           />
 
           <KPICard
@@ -86,8 +88,9 @@ export function App() {
                 ? `${topTarget.value.toFixed(1)}% of inbound attack traffic`
                 : undefined
             }
-            icon={<ActivityIcon />}
+            icon={<IngressTargetIcon />}
             loading={summaryLoading}
+            variant="info"
           />
 
           <KPICard
@@ -98,9 +101,10 @@ export function App() {
                 ? `${dominantProtocol[1].toFixed(1)}% of volumetric floods`
                 : undefined
             }
-            icon={<ZapIcon />}
+            icon={<ProtocolVectorIcon />}
             loading={summaryLoading}
             isMonoValue={true}
+            variant="success"
           />
         </section>
 
@@ -152,7 +156,7 @@ export function App() {
         </section>
       </main>
 
-      {/* Cold Tactical Footer */}
+      {/* Cold Tactical Footer with Lenz Branding */}
       <footer
         style={{
           borderTop: "1px solid var(--border-primary)",
@@ -196,7 +200,7 @@ export function App() {
               {dataStatus?.has_api_token ? "LIVE INGESTION ACTIVE" : "SIMULATED TELEMETRY"}
             </span>
             <span>•</span>
-            <span>FEED: CLOUDFLARE_RADAR_REST_V4</span>
+            <span>LENZ // CLOUDFLARE_RADAR_REST_V4</span>
             {dataStatus?.last_successful_fetch && (
               <>
                 <span>•</span>

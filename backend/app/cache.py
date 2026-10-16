@@ -1,4 +1,4 @@
-"""ThreatLens Backend — In-memory TTL cache."""
+"""Lenz Backend — In-memory TTL cache."""
 
 import time
 from typing import Any

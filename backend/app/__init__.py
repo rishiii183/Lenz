@@ -1,1 +1,1 @@
-# ThreatLens backend app package
+# Lenz backend app package

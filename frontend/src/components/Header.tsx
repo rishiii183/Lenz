@@ -23,8 +23,9 @@ export function Header({ isSimulated = false }: HeaderProps) {
           justifyContent: "space-between",
         }}
       >
-        {/* Brand & System Designation */}
+        {/* Brand: Lenz & System Designation */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {/* Optical Aperture Lens Emblem */}
           <div
             style={{
               width: 32,
@@ -38,8 +39,13 @@ export function Header({ isSimulated = false }: HeaderProps) {
               color: "#cbd5e1",
             }}
           >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="4" strokeWidth="2.2" />
+              <line x1="12" y1="2" x2="12" y2="5" />
+              <line x1="12" y1="19" x2="12" y2="22" />
+              <line x1="2" y1="12" x2="5" y2="12" />
+              <line x1="19" y1="12" x2="22" y2="12" />
             </svg>
           </div>
           <div>
@@ -47,18 +53,18 @@ export function Header({ isSimulated = false }: HeaderProps) {
               <span
                 className="font-display"
                 style={{
-                  fontSize: "1.05rem",
+                  fontSize: "1.1rem",
                   fontWeight: 800,
-                  letterSpacing: "0.07em",
+                  letterSpacing: "0.08em",
                   color: "#f8fafc",
                 }}
               >
-                THREATLENS
+                LENZ
               </span>
               <span
                 style={{
                   fontSize: "0.62rem",
-                  padding: "1px 5px",
+                  padding: "1px 6px",
                   borderRadius: "2px",
                   background: "#161d2b",
                   border: "1px solid #283347",

@@ -1,4 +1,4 @@
-/* API client for ThreatLens backend */
+/* API client for Lenz backend */
 
 const API_BASE = '/api';
 

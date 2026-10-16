@@ -1,4 +1,4 @@
-"""ThreatLens Backend — Cloudflare Radar API client."""
+"""Lenz Backend — Cloudflare Radar API client."""
 
 import httpx
 import logging

@@ -1,4 +1,4 @@
-"""ThreatLens Backend — Pydantic models for API contracts."""
+"""Lenz Backend — Pydantic models for API contracts."""
 
 from pydantic import BaseModel, Field
 from datetime import datetime

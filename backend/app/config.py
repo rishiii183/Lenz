@@ -1,4 +1,4 @@
-"""ThreatLens Backend — Configuration via environment variables."""
+"""Lenz Backend — Configuration via environment variables."""
 
 from pydantic_settings import BaseSettings
 from functools import lru_cache

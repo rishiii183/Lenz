@@ -1,4 +1,4 @@
-"""ThreatLens Backend — FastAPI application entry point."""
+"""Lenz Backend — FastAPI application entry point."""
 
 import logging
 from contextlib import asynccontextmanager
@@ -25,17 +25,17 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """Application startup and shutdown."""
     settings = get_settings()
-    logger.info("ThreatLens backend starting")
+    logger.info("Lenz backend starting")
     logger.info(f"API token configured: {settings.has_api_token}")
     logger.info(f"CORS origins: {settings.cors_origins_list}")
     yield
-    logger.info("ThreatLens backend shutting down")
+    logger.info("Lenz backend shutting down")
     cache.clear()
 
 
 app = FastAPI(
-    title="ThreatLens API",
-    description="DDoS threat intelligence visualization backend",
+    title="Lenz API",
+    description="Lenz — Global DDoS threat intelligence and telemetry API",
     version="0.1.0",
     lifespan=lifespan,
 )

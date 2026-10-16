@@ -1,6 +1,6 @@
 <div align="center">
 
-# Lensz
+# Lenz
 ### Autonomous Global DDoS Threat Intelligence & 3D Telemetry Platform
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -37,7 +37,7 @@
                                          │ JSON Stream / REST APIs
                                          ▼
  ┌─────────────────────────────────────────────────────────────────────────────┐
- │                         THREATLENS FRONTEND CONSOLE                         │
+ │                            LENZ FRONTEND CONSOLE                            │
  │  ┌───────────────────────┐  ┌──────────────────────┐  ┌──────────────────┐  │
  │  │   3D GitHub Globe     │  │  Recharts Volumetric │  │ Vector Protocol  │  │
  │  │   • Country-Pair Arcs │  │  • 24H / 7D / 28D    │  │ • UDP / TCP /    │  │
@@ -127,7 +127,7 @@ Open your browser at **http://127.0.0.1:5173**.
 
 ## 🔑 Cloudflare Radar API Integration
 
-ThreatLens natively integrates with Cloudflare Radar REST API v4:
+Lenz natively integrates with Cloudflare Radar REST API v4:
 
 1. Visit [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens).
 2. Click **Create Token** → **Custom Token**.
