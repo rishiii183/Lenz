@@ -1,19 +1,31 @@
 interface KPICardProps {
   title: string;
   value: string | number;
+  unit?: string;
   subtitle?: string;
   icon: React.ReactNode;
-  delay?: number;
   loading?: boolean;
+  isMonoValue?: boolean;
 }
 
 export function KPICard({
   title,
   value,
+  unit,
   subtitle,
   icon,
   loading = false,
+  isMonoValue = false,
 }: KPICardProps) {
+  // If unit not explicitly passed, extract trailing '%' or similar unit
+  let displayValue = String(value);
+  let displayUnit = unit;
+
+  if (!displayUnit && typeof value === "string" && value.endsWith("%")) {
+    displayValue = value.slice(0, -1);
+    displayUnit = "%";
+  }
+
   return (
     <div className="soc-card">
       <div className="kpi-container">
@@ -28,9 +40,14 @@ export function KPICard({
           <div style={{ flex: 1, minWidth: 0 }}>
             <p className="kpi-label">{title}</p>
             {loading ? (
-              <div className="skeleton" style={{ width: "90px", height: "30px", margin: "4px 0" }} />
+              <div className="skeleton" style={{ width: "95px", height: "32px", margin: "4px 0" }} />
             ) : (
-              <p className="kpi-value">{value}</p>
+              <div className="kpi-value-row">
+                <span className={isMonoValue ? "kpi-value-mono" : "kpi-value"}>
+                  {displayValue}
+                </span>
+                {displayUnit && <span className="kpi-unit">{displayUnit}</span>}
+              </div>
             )}
             {subtitle && !loading && (
               <p className="kpi-meta">{subtitle}</p>
@@ -41,7 +58,7 @@ export function KPICard({
               width: 36,
               height: 36,
               borderRadius: "4px",
-              background: "#141923",
+              background: "#121722",
               border: "1px solid #1e2636",
               display: "flex",
               alignItems: "center",

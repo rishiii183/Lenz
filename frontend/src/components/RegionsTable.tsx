@@ -17,26 +17,21 @@ export function RegionsTable({
   const currentList = activeTab === "origin" ? originRegions : targetRegions;
 
   return (
-    <div className="soc-card" style={{ padding: "16px 20px" }}>
+    <div className="soc-card" style={{ padding: "18px 22px" }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "14px",
+          marginBottom: "16px",
           flexWrap: "wrap",
           gap: "10px",
         }}
       >
         <div>
           <h3
+            className="section-heading"
             style={{
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              color: "#f1f5f9",
-              letterSpacing: "0.06em",
-              fontFamily: "'JetBrains Mono', monospace",
-              textTransform: "uppercase",
               display: "flex",
               alignItems: "center",
               gap: "8px",
@@ -52,7 +47,7 @@ export function RegionsTable({
             />
             GEOGRAPHIC ATTACK CONCENTRATION
           </h3>
-          <p style={{ fontSize: "0.7rem", color: "#64748b", fontFamily: "'JetBrains Mono', monospace", marginTop: "2px" }}>
+          <p className="section-subheading">
             VOLUMETRIC DISTRIBUTION BY COUNTRY ORIGIN AND INGRESS TARGET
           </p>
         </div>
@@ -77,8 +72,9 @@ export function RegionsTable({
               borderRadius: "3px",
               padding: "4px 12px",
               fontSize: "0.68rem",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-mono)",
               fontWeight: 700,
+              letterSpacing: "0.04em",
               cursor: "pointer",
               transition: "all 0.15s ease",
             }}
@@ -95,8 +91,9 @@ export function RegionsTable({
               borderRadius: "3px",
               padding: "4px 12px",
               fontSize: "0.68rem",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-mono)",
               fontWeight: 700,
+              letterSpacing: "0.04em",
               cursor: "pointer",
               transition: "all 0.15s ease",
             }}
@@ -110,10 +107,10 @@ export function RegionsTable({
         <table className="data-table">
           <thead>
             <tr>
-              <th style={{ width: "50px" }}>RANK</th>
+              <th style={{ width: "65px" }}>INDEX</th>
               <th>COUNTRY / JURISDICTION</th>
-              <th style={{ width: "80px" }}>ISO</th>
-              <th style={{ width: "160px", textAlign: "right" }}>VOLUMETRIC SHARE</th>
+              <th style={{ width: "90px" }}>CODE</th>
+              <th style={{ width: "170px", textAlign: "right" }}>VOLUMETRIC RATIO</th>
             </tr>
           </thead>
           <tbody>
@@ -121,65 +118,71 @@ export function RegionsTable({
               Array.from({ length: 5 }).map((_, i) => (
                 <tr key={i}>
                   <td colSpan={4}>
-                    <div className="skeleton" style={{ width: "100%", height: 20 }} />
+                    <div className="skeleton" style={{ width: "100%", height: 22 }} />
                   </td>
                 </tr>
               ))
             ) : currentList.length === 0 ? (
               <tr>
-                <td colSpan={4} style={{ textAlign: "center", color: "#64748b", padding: "18px", fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem" }}>
+                <td colSpan={4} style={{ textAlign: "center", color: "#64748b", padding: "20px", fontFamily: "var(--font-mono)", fontSize: "0.75rem" }}>
                   NO REGIONAL TELEMETRY DATA RETURNED
                 </td>
               </tr>
             ) : (
-              currentList.map((entry, idx) => (
-                <tr key={entry.country_code || idx}>
-                  <td style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "#64748b" }}>
-                    #{entry.rank || idx + 1}
-                  </td>
-                  <td style={{ fontWeight: 600, color: "#f1f5f9" }}>
-                    {entry.country_name || entry.country_code}
-                  </td>
-                  <td>
-                    <span
-                      style={{
-                        padding: "1px 5px",
-                        borderRadius: "2px",
-                        background: "#161d2b",
-                        border: "1px solid #232d3f",
-                        fontSize: "0.7rem",
-                        fontFamily: "'JetBrains Mono', monospace",
-                        color: "#94a3b8",
-                      }}
-                    >
-                      {entry.country_code}
-                    </span>
-                  </td>
-                  <td style={{ textAlign: "right" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px" }}>
+              currentList.map((entry, idx) => {
+                const rankNum = entry.rank || idx + 1;
+                const paddedRank = rankNum < 10 ? `#0${rankNum}` : `#${rankNum}`;
+
+                return (
+                  <tr key={entry.country_code || idx}>
+                    <td style={{ fontFamily: "var(--font-mono)", fontWeight: 700, color: "#64748b", fontSize: "0.75rem" }}>
+                      {paddedRank}
+                    </td>
+                    <td style={{ fontWeight: 600, color: "#f1f5f9", letterSpacing: "-0.01em" }}>
+                      {entry.country_name || entry.country_code}
+                    </td>
+                    <td>
                       <span
                         style={{
-                          fontWeight: 700,
-                          fontFamily: "'JetBrains Mono', monospace",
-                          color: activeTab === "origin" ? "#f59e0b" : "#ef4444",
-                          fontSize: "0.75rem",
+                          padding: "2px 6px",
+                          borderRadius: "2px",
+                          background: "#141924",
+                          border: "1px solid #232d3f",
+                          fontSize: "0.7rem",
+                          fontFamily: "var(--font-mono)",
+                          color: "#94a3b8",
+                          letterSpacing: "0.05em",
                         }}
                       >
-                        {entry.value.toFixed(1)}%
+                        {entry.country_code}
                       </span>
-                      <div style={{ width: 45 }} className="meter-track">
-                        <div
-                          className="meter-fill"
+                    </td>
+                    <td style={{ textAlign: "right" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "10px" }}>
+                        <span
+                          className="tabular-nums font-mono"
                           style={{
-                            width: `${Math.min(entry.value * 2.5, 100)}%`,
-                            backgroundColor: activeTab === "origin" ? "#f59e0b" : "#ef4444",
+                            fontWeight: 700,
+                            color: activeTab === "origin" ? "#f59e0b" : "#ef4444",
+                            fontSize: "0.78rem",
                           }}
-                        />
+                        >
+                          {entry.value.toFixed(1)}%
+                        </span>
+                        <div style={{ width: 50 }} className="meter-track">
+                          <div
+                            className="meter-fill"
+                            style={{
+                              width: `${Math.min(entry.value * 2.5, 100)}%`,
+                              backgroundColor: activeTab === "origin" ? "#f59e0b" : "#ef4444",
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

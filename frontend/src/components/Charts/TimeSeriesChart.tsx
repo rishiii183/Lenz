@@ -36,26 +36,21 @@ export function TimeSeriesChart({
   });
 
   return (
-    <div className="soc-card" style={{ padding: "16px 20px", height: "100%", display: "flex", flexDirection: "column" }}>
+    <div className="soc-card" style={{ padding: "18px 22px", height: "100%", display: "flex", flexDirection: "column" }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "14px",
+          marginBottom: "16px",
           flexWrap: "wrap",
           gap: "10px",
         }}
       >
         <div>
           <h3
+            className="section-heading"
             style={{
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              color: "#f1f5f9",
-              letterSpacing: "0.06em",
-              fontFamily: "'JetBrains Mono', monospace",
-              textTransform: "uppercase",
               display: "flex",
               alignItems: "center",
               gap: "8px",
@@ -71,7 +66,7 @@ export function TimeSeriesChart({
             />
             VOLUMETRIC ATTACK TRENDS
           </h3>
-          <p style={{ fontSize: "0.7rem", color: "#64748b", fontFamily: "'JetBrains Mono', monospace", marginTop: "2px" }}>
+          <p className="section-subheading">
             METRIC: {data?.metric || "NORMALIZED_DDOS_INTENSITY"} ({data?.unit || "% OF INGESTION"})
           </p>
         </div>
@@ -98,8 +93,9 @@ export function TimeSeriesChart({
                 borderRadius: "3px",
                 padding: "3px 10px",
                 fontSize: "0.68rem",
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "var(--font-mono)",
                 fontWeight: 600,
+                letterSpacing: "0.05em",
                 cursor: "pointer",
                 transition: "all 0.15s ease",
               }}
@@ -125,7 +121,7 @@ export function TimeSeriesChart({
               height: "100%",
               color: "#64748b",
               fontSize: "0.75rem",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-mono)",
             }}
           >
             NO DATA POINTS IN SELECTED RANGE
@@ -144,13 +140,13 @@ export function TimeSeriesChart({
                 dataKey="label"
                 stroke="#475569"
                 fontSize={10}
-                fontFamily="'JetBrains Mono', monospace"
+                fontFamily="var(--font-mono)"
                 tickLine={false}
               />
               <YAxis
                 stroke="#475569"
                 fontSize={10}
-                fontFamily="'JetBrains Mono', monospace"
+                fontFamily="var(--font-mono)"
                 tickLine={false}
                 tickFormatter={(val) => `${val}%`}
               />
@@ -164,17 +160,18 @@ export function TimeSeriesChart({
                           background: "#0a0e17",
                           border: "1px solid #28354b",
                           borderRadius: "4px",
-                          padding: "6px 10px",
+                          padding: "8px 12px",
                           boxShadow: "0 4px 12px rgba(0,0,0,0.6)",
-                          fontFamily: "'JetBrains Mono', monospace",
+                          fontFamily: "var(--font-mono)",
                         }}
                       >
                         <p style={{ fontSize: "0.68rem", color: "#64748b" }}>
                           {item.timestamp}
                         </p>
                         <p
+                          className="tabular-nums"
                           style={{
-                            fontSize: "0.82rem",
+                            fontSize: "0.85rem",
                             fontWeight: 700,
                             color: "#f1f5f9",
                             marginTop: "2px",

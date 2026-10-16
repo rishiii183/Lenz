@@ -45,8 +45,8 @@ export function Header({ dataStatus, loading }: HeaderProps) {
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div
             style={{
-              width: 34,
-              height: 34,
+              width: 32,
+              height: 32,
               borderRadius: "4px",
               background: "#121722",
               border: "1px solid #232c3d",
@@ -56,43 +56,46 @@ export function Header({ dataStatus, loading }: HeaderProps) {
               color: "#cbd5e1",
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <span
+                className="font-display"
                 style={{
-                  fontSize: "1rem",
+                  fontSize: "1.05rem",
                   fontWeight: 800,
-                  letterSpacing: "0.06em",
+                  letterSpacing: "0.07em",
                   color: "#f8fafc",
-                  fontFamily: "'JetBrains Mono', monospace",
                 }}
               >
                 THREATLENS
               </span>
               <span
                 style={{
-                  fontSize: "0.65rem",
-                  padding: "1px 6px",
+                  fontSize: "0.62rem",
+                  padding: "1px 5px",
                   borderRadius: "2px",
                   background: "#161d2b",
                   border: "1px solid #283347",
                   color: "#94a3b8",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "var(--font-mono)",
+                  fontWeight: 600,
+                  letterSpacing: "0.05em",
                 }}
               >
-                v1.4.2
+                OPS::CONSOLE
               </span>
             </div>
             <p
               style={{
-                fontSize: "0.72rem",
+                fontSize: "0.68rem",
                 color: "#64748b",
-                fontFamily: "'JetBrains Mono', monospace",
-                letterSpacing: "0.02em",
+                fontFamily: "var(--font-mono)",
+                letterSpacing: "0.04em",
+                marginTop: "1px",
               }}
             >
               GLOBAL DDOS THREAT INTELLIGENCE & TELEMETRY
@@ -109,30 +112,31 @@ export function Header({ dataStatus, loading }: HeaderProps) {
 
           <div
             style={{
-              fontSize: "0.72rem",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "0.7rem",
+              fontFamily: "var(--font-mono)",
               color: "#64748b",
               borderLeft: "1px solid #1e2433",
               paddingLeft: "14px",
             }}
           >
-            FEED:{" "}
+            SOURCE:{" "}
             <a
               href="https://developers.cloudflare.com/radar/"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: "#94a3b8", textDecoration: "none", fontWeight: 600 }}
             >
-              CLOUDFLARE_RADAR_L3_L7
+              CLOUDFLARE_RADAR_REST_V4
             </a>
           </div>
 
           {dataStatus?.last_successful_fetch && (
             <div
               style={{
-                fontSize: "0.72rem",
-                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.7rem",
+                fontFamily: "var(--font-mono)",
                 color: "#64748b",
+                fontVariantNumeric: "tabular-nums",
               }}
             >
               SYNC: {new Date(dataStatus.last_successful_fetch).toLocaleTimeString()}
@@ -146,9 +150,11 @@ export function Header({ dataStatus, loading }: HeaderProps) {
         <div style={{ padding: "0 24px 10px" }}>
           <div className="notice-banner">
             <span>
-              [SOURCE: SYNTHESIZED TELEMETRY ENGINE] Configure CLOUDFLARE_API_TOKEN in backend/.env for live edge ingestion.
+              [SOURCE: SYNTHESIZED STREAM] Add CLOUDFLARE_API_TOKEN in backend/.env for live autonomous edge telemetry.
             </span>
-            <span style={{ color: "#94a3b8", fontSize: "0.68rem" }}>FAILSAFE_MODE_ENABLED</span>
+            <span style={{ color: "#94a3b8", fontSize: "0.66rem", letterSpacing: "0.05em" }}>
+              FAILSAFE_ACTIVE
+            </span>
           </div>
         </div>
       )}

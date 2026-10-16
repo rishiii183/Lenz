@@ -152,28 +152,12 @@ export function GlobeSection({
                 display: "inline-block",
               }}
             />
-            <h2
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                letterSpacing: "0.08em",
-                color: "#f1f5f9",
-                fontFamily: "'JetBrains Mono', monospace",
-                textTransform: "uppercase",
-              }}
-            >
+            <h2 className="section-heading">
               GEO-SPATIAL ATTACK TELEMETRY
             </h2>
           </div>
-          <p
-            style={{
-              fontSize: "0.7rem",
-              color: "#64748b",
-              fontFamily: "'JetBrains Mono', monospace",
-              marginTop: "2px",
-            }}
-          >
-            ACTIVE_ARCS: {globeArcs.length} | SAMPLING: COUNTRY_LEVEL_AGGREGATE
+          <p className="section-subheading">
+            ACTIVE_CONDUITS: {globeArcs.length} // AGGREGATION: COUNTRY_LEVEL
           </p>
         </div>
 
@@ -200,7 +184,7 @@ export function GlobeSection({
               borderRadius: "3px",
               padding: "3px 8px",
               fontSize: "0.68rem",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-mono)",
               fontWeight: 600,
               cursor: "pointer",
             }}
@@ -216,7 +200,7 @@ export function GlobeSection({
               border: "none",
               padding: "3px 8px",
               fontSize: "0.68rem",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-mono)",
               fontWeight: 600,
               cursor: "pointer",
             }}
@@ -261,19 +245,19 @@ export function GlobeSection({
         >
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444" }} />
-            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "var(--font-mono)", letterSpacing: "0.04em" }}>
               CRITICAL VECTOR
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#f59e0b" }} />
-            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "var(--font-mono)", letterSpacing: "0.04em" }}>
               ELEVATED FLOW
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#94a3b8" }} />
-            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "var(--font-mono)", letterSpacing: "0.04em" }}>
               STANDARD TELEMETRY
             </span>
           </div>
@@ -287,10 +271,11 @@ export function GlobeSection({
             padding: "5px 12px",
             borderRadius: "4px",
             border: "1px solid #1e2636",
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "var(--font-mono)",
+            letterSpacing: "0.04em",
           }}
         >
-          ORBIT_CONTROLS: DRAG TO PAN // PASSIVE ROTATION
+          ORBIT_CONTROLS // PASSIVE_ROTATION
         </div>
       </div>
     </div>

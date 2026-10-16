@@ -18,16 +18,11 @@ export function ProtocolBreakdown({ protocols, loading }: ProtocolBreakdownProps
   const protocolEntries = Object.entries(protocols || {}).sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="soc-card" style={{ padding: "16px 20px", height: "100%", display: "flex", flexDirection: "column" }}>
-      <div style={{ marginBottom: "14px" }}>
+    <div className="soc-card" style={{ padding: "18px 22px", height: "100%", display: "flex", flexDirection: "column" }}>
+      <div style={{ marginBottom: "16px" }}>
         <h3
+          className="section-heading"
           style={{
-            fontSize: "0.85rem",
-            fontWeight: 700,
-            color: "#f1f5f9",
-            letterSpacing: "0.06em",
-            fontFamily: "'JetBrains Mono', monospace",
-            textTransform: "uppercase",
             display: "flex",
             alignItems: "center",
             gap: "8px",
@@ -43,18 +38,18 @@ export function ProtocolBreakdown({ protocols, loading }: ProtocolBreakdownProps
           />
           ATTACK VECTORS & PROTOCOLS
         </h3>
-        <p style={{ fontSize: "0.7rem", color: "#64748b", fontFamily: "'JetBrains Mono', monospace", marginTop: "2px" }}>
+        <p className="section-subheading">
           L3/L4 & L7 VOLUMETRIC DISTRIBUTION BREAKDOWN
         </p>
       </div>
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "10px", justifyContent: "center" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "12px", justifyContent: "center" }}>
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="skeleton" style={{ width: "100%", height: 22 }} />
+            <div key={i} className="skeleton" style={{ width: "100%", height: 24 }} />
           ))
         ) : protocolEntries.length === 0 ? (
-          <div style={{ color: "#64748b", fontSize: "0.75rem", fontFamily: "'JetBrains Mono', monospace", textAlign: "center" }}>
+          <div style={{ color: "#64748b", fontSize: "0.75rem", fontFamily: "var(--font-mono)", textAlign: "center" }}>
             NO PROTOCOL VECTORS DETECTED
           </div>
         ) : (
@@ -76,15 +71,17 @@ export function ProtocolBreakdown({ protocols, loading }: ProtocolBreakdownProps
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    fontSize: "0.72rem",
-                    marginBottom: "3px",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.74rem",
+                    marginBottom: "4px",
+                    fontFamily: "var(--font-mono)",
                   }}
                 >
-                  <span style={{ fontWeight: 600, color: "#94a3b8", textTransform: "uppercase" }}>
+                  <span style={{ fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     {name}
                   </span>
-                  <span style={{ fontWeight: 700, color }}>{formattedPct}%</span>
+                  <span className="tabular-nums" style={{ fontWeight: 700, color }}>
+                    {formattedPct}%
+                  </span>
                 </div>
                 <div className="meter-track">
                   <div

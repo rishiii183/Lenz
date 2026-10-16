@@ -56,12 +56,14 @@ export function App() {
             title="DDoS TRAFFIC RATIO"
             value={
               summary?.total_attack_percentage != null
-                ? `${summary.total_attack_percentage.toFixed(1)}%`
+                ? summary.total_attack_percentage.toFixed(1)
                 : "N/A"
             }
+            unit={summary?.total_attack_percentage != null ? "%" : undefined}
             subtitle="Observed global malicious traffic share"
             icon={<ShieldIcon />}
             loading={summaryLoading}
+            isMonoValue={true}
           />
 
           <KPICard
@@ -98,6 +100,7 @@ export function App() {
             }
             icon={<ZapIcon />}
             loading={summaryLoading}
+            isMonoValue={true}
           />
         </section>
 
@@ -165,7 +168,7 @@ export function App() {
             gap: "12px",
             fontSize: "0.72rem",
             color: "#64748b",
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "var(--font-mono)",
           }}
         >
           <div>
@@ -183,7 +186,7 @@ export function App() {
                 padding: "3px 10px",
                 cursor: "pointer",
                 fontSize: "0.68rem",
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "var(--font-mono)",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "5px",
