@@ -124,7 +124,7 @@ async def fetch_threat_summary(date_range: str = "7d") -> ThreatSummary:
     # Fetch top target countries
     target_data = await _make_request(
         "/attacks/layer3/top/locations/target",
-        {"dateRange": date_range, "limit": "10", "format": "json"},
+        {"dateRange": api_range, "limit": "10", "format": "json"},
     )
 
     if not any([protocol_data, origin_data, target_data]):
@@ -152,12 +152,13 @@ async def fetch_threat_summary(date_range: str = "7d") -> ThreatSummary:
         top_list = origin_data.get("top_0", origin_data.get("top", []))
         if isinstance(top_list, list):
             for i, entry in enumerate(top_list):
-                code = entry.get("clientCountryAlpha2", entry.get("originCountryAlpha2", ""))
+                code = entry.get("originCountryAlpha2") or entry.get("clientCountryAlpha2") or entry.get("countryAlpha2", "")
+                name = entry.get("originCountryName") or _get_country_name(code)
                 value = entry.get("value", 0)
                 try:
                     origins.append({
                         "country_code": code,
-                        "country_name": _get_country_name(code),
+                        "country_name": name,
                         "value": round(float(value), 2),
                         "rank": i + 1,
                     })
@@ -170,12 +171,13 @@ async def fetch_threat_summary(date_range: str = "7d") -> ThreatSummary:
         top_list = target_data.get("top_0", target_data.get("top", []))
         if isinstance(top_list, list):
             for i, entry in enumerate(top_list):
-                code = entry.get("clientCountryAlpha2", entry.get("targetCountryAlpha2", ""))
+                code = entry.get("targetCountryAlpha2") or entry.get("clientCountryAlpha2") or entry.get("countryAlpha2", "")
+                name = entry.get("targetCountryName") or _get_country_name(code)
                 value = entry.get("value", 0)
                 try:
                     targets.append({
                         "country_code": code,
-                        "country_name": _get_country_name(code),
+                        "country_name": name,
                         "value": round(float(value), 2),
                         "rank": i + 1,
                     })
@@ -304,14 +306,22 @@ async def fetch_regions(date_range: str = "7d") -> RegionsResponse:
         top_list = data.get("top_0", data.get("top", []))
         if isinstance(top_list, list):
             for i, entry in enumerate(top_list):
-                code = entry.get("clientCountryAlpha2",
-                        entry.get("originCountryAlpha2",
-                        entry.get("targetCountryAlpha2", "")))
+                code = (
+                    entry.get("originCountryAlpha2")
+                    or entry.get("targetCountryAlpha2")
+                    or entry.get("clientCountryAlpha2")
+                    or entry.get("countryAlpha2", "")
+                )
+                name = (
+                    entry.get("originCountryName")
+                    or entry.get("targetCountryName")
+                    or _get_country_name(code)
+                )
                 value = entry.get("value", 0)
                 try:
                     regions.append(RegionData(
                         country_code=code,
-                        country_name=_get_country_name(code),
+                        country_name=name,
                         value=round(float(value), 2),
                         rank=i + 1,
                     ))

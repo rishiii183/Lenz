@@ -45,12 +45,12 @@ export function App() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      {/* Top Tactical Command Header */}
-      <Header dataStatus={dataStatus} loading={statusLoading} />
+      {/* Clean Top Command Header */}
+      <Header isSimulated={dataStatus?.is_simulated} />
 
       {/* Main SOC Dashboard */}
       <main style={{ flex: 1, maxWidth: "1600px", margin: "0 auto", width: "100%" }}>
-        {/* KPI Telemetry Row */}
+        {/* Row 1: KPI Telemetry Cards */}
         <section className="dashboard-grid">
           <KPICard
             title="DDoS TRAFFIC RATIO"
@@ -104,37 +104,41 @@ export function App() {
           />
         </section>
 
-        {/* Primary Interactive Map & Vector Analytics Grid */}
-        <section className="main-grid">
-          {/* Left Column: 3D Tactical Globe */}
-          <div>
-            <GlobeSection
-              originCountries={
-                regions?.origin_regions || summary?.top_origin_countries || []
-              }
-              targetCountries={
-                regions?.target_regions || summary?.top_target_countries || []
-              }
-              loading={summaryLoading || regionsLoading}
-            />
-          </div>
-
-          {/* Right Column: TimeSeries Trend & Protocol Breakdown */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <TimeSeriesChart
-              data={timeseries}
-              loading={tsLoading}
-              activeRange={timeRange}
-              onRangeChange={setTimeRange}
-            />
-            <ProtocolBreakdown
-              protocols={summary?.top_attack_protocols}
-              loading={summaryLoading}
-            />
-          </div>
+        {/* Row 2: CENTERPIECE 3D GLOBE */}
+        <section style={{ padding: "0 24px 20px" }}>
+          <GlobeSection
+            originCountries={
+              regions?.origin_regions || summary?.top_origin_countries || []
+            }
+            targetCountries={
+              regions?.target_regions || summary?.top_target_countries || []
+            }
+            loading={summaryLoading || regionsLoading}
+          />
         </section>
 
-        {/* Regional Telemetry Table */}
+        {/* Row 3: Balanced Analytics Deck (TimeSeries Trends & Protocol Distribution) */}
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+            gap: "16px",
+            padding: "0 24px 20px",
+          }}
+        >
+          <TimeSeriesChart
+            data={timeseries}
+            loading={tsLoading}
+            activeRange={timeRange}
+            onRangeChange={setTimeRange}
+          />
+          <ProtocolBreakdown
+            protocols={summary?.top_attack_protocols}
+            loading={summaryLoading}
+          />
+        </section>
+
+        {/* Row 4: Regional Telemetry Table */}
         <section style={{ padding: "0 24px 24px" }}>
           <RegionsTable
             originRegions={
@@ -171,8 +175,34 @@ export function App() {
             fontFamily: "var(--font-mono)",
           }}
         >
-          <div>
-            THREATLENS // CYBERSECURITY TELEMETRY PLATFORM • INGESTION: CLOUDFLARE_RADAR_REST_V4
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                color: dataStatus?.has_api_token ? "#34d399" : "#fbbf24",
+                fontWeight: 600,
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  backgroundColor: "currentColor",
+                }}
+              />
+              {dataStatus?.has_api_token ? "LIVE INGESTION ACTIVE" : "SIMULATED TELEMETRY"}
+            </span>
+            <span>•</span>
+            <span>FEED: CLOUDFLARE_RADAR_REST_V4</span>
+            {dataStatus?.last_successful_fetch && (
+              <>
+                <span>•</span>
+                <span>SYNC: {new Date(dataStatus.last_successful_fetch).toLocaleTimeString()}</span>
+              </>
+            )}
           </div>
 
           <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>

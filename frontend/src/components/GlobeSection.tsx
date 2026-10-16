@@ -121,7 +121,7 @@ export function GlobeSection({
       className="soc-card"
       style={{
         position: "relative",
-        height: "600px",
+        height: "640px",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",

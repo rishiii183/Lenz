@@ -1,24 +1,8 @@
-import type { DataStatus } from "../types";
-
 interface HeaderProps {
-  dataStatus: DataStatus | null;
-  loading: boolean;
+  isSimulated?: boolean;
 }
 
-export function Header({ dataStatus, loading }: HeaderProps) {
-  const status = dataStatus?.status ?? (loading ? "loading" : "demo");
-  const isSimulated = dataStatus?.is_simulated ?? true;
-
-  const statusConfig: Record<string, { label: string; class: string }> = {
-    live: { label: "RADAR // INGESTION ACTIVE", class: "status-live" },
-    demo: { label: "DEMO // SYNTHESIZED STREAM", class: "status-demo" },
-    stale: { label: "CACHE // STALE REVALIDATION", class: "status-stale" },
-    error: { label: "OFFLINE // CONNECTION ERR", class: "status-error" },
-    loading: { label: "CONNECTING // TELEMETRY", class: "status-demo" },
-  };
-
-  const { label, class: pillClass } = statusConfig[status] || statusConfig.demo;
-
+export function Header({ isSimulated = false }: HeaderProps) {
   return (
     <header
       style={{
@@ -33,12 +17,10 @@ export function Header({ dataStatus, loading }: HeaderProps) {
         style={{
           maxWidth: "1600px",
           margin: "0 auto",
-          padding: "12px 24px",
+          padding: "14px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: "12px",
         }}
       >
         {/* Brand & System Designation */}
@@ -102,50 +84,9 @@ export function Header({ dataStatus, loading }: HeaderProps) {
             </p>
           </div>
         </div>
-
-        {/* Telemetry Status Controls */}
-        <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
-          <span className={`status-pill ${pillClass}`}>
-            <span className="status-indicator-dot" />
-            {label}
-          </span>
-
-          <div
-            style={{
-              fontSize: "0.7rem",
-              fontFamily: "var(--font-mono)",
-              color: "#64748b",
-              borderLeft: "1px solid #1e2433",
-              paddingLeft: "14px",
-            }}
-          >
-            SOURCE:{" "}
-            <a
-              href="https://developers.cloudflare.com/radar/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#94a3b8", textDecoration: "none", fontWeight: 600 }}
-            >
-              CLOUDFLARE_RADAR_REST_V4
-            </a>
-          </div>
-
-          {dataStatus?.last_successful_fetch && (
-            <div
-              style={{
-                fontSize: "0.7rem",
-                fontFamily: "var(--font-mono)",
-                color: "#64748b",
-                fontVariantNumeric: "tabular-nums",
-              }}
-            >
-              SYNC: {new Date(dataStatus.last_successful_fetch).toLocaleTimeString()}
-            </div>
-          )}
-        </div>
       </div>
 
-      {/* Professional Telemetry Notice Bar */}
+      {/* Professional Telemetry Notice Bar only when simulated */}
       {isSimulated && (
         <div style={{ padding: "0 24px 10px" }}>
           <div className="notice-banner">
