@@ -9,7 +9,8 @@ interface GlobeSectionProps {
   loading: boolean;
 }
 
-const ARC_COLORS = ["#f43f5e", "#f59e0b", "#06b6d4", "#8b5cf6", "#ec4899", "#3b82f6"];
+// Cold tactical vector palette: high threat crimson, elevated warning amber, cold steel telemetry
+const ARC_COLORS = ["#ef4444", "#f59e0b", "#94a3b8", "#cbd5e1", "#dc2626", "#e2e8f0"];
 
 export function GlobeSection({
   originCountries,
@@ -17,12 +18,11 @@ export function GlobeSection({
   loading,
 }: GlobeSectionProps) {
   const [autoRotate, setAutoRotate] = useState(true);
-  const [rotationSpeed, setRotationSpeed] = useState(0.8);
+  const [rotationSpeed, setRotationSpeed] = useState(0.4);
 
   // Generate dynamic 3D attack arcs between origin and target countries
   const globeArcs = useMemo(() => {
     if (!originCountries.length || !targetCountries.length) {
-      // Default fallback arcs if data is not yet loaded
       return [
         {
           order: 1,
@@ -30,8 +30,8 @@ export function GlobeSection({
           startLng: -95.7129,
           endLat: 51.1657,
           endLng: 10.4515,
-          arcAlt: 0.3,
-          color: "#f43f5e",
+          arcAlt: 0.25,
+          color: "#ef4444",
         },
         {
           order: 2,
@@ -39,8 +39,8 @@ export function GlobeSection({
           startLng: 104.1954,
           endLat: 37.0902,
           endLng: -95.7129,
-          arcAlt: 0.45,
-          color: "#06b6d4",
+          arcAlt: 0.35,
+          color: "#94a3b8",
         },
         {
           order: 3,
@@ -48,7 +48,7 @@ export function GlobeSection({
           startLng: 105.3188,
           endLat: 48.3794,
           endLng: 31.1656,
-          arcAlt: 0.25,
+          arcAlt: 0.2,
           color: "#f59e0b",
         },
       ];
@@ -57,7 +57,6 @@ export function GlobeSection({
     const arcs = [];
     let order = 1;
 
-    // Create pairwise attack vectors between top origins and top targets
     const origins = originCountries.slice(0, 5);
     const targets = targetCountries.slice(0, 5);
 
@@ -66,14 +65,13 @@ export function GlobeSection({
       const origCoord = getCountryCoord(orig.country_code);
 
       for (let j = 0; j < targets.length; j++) {
-        // Skip identical country self-attacks for visual clarity
         if (orig.country_code === targets[j].country_code) continue;
 
         const targ = targets[j];
         const targCoord = getCountryCoord(targ.country_code);
 
         const color = ARC_COLORS[(i + j) % ARC_COLORS.length];
-        const arcAlt = 0.15 + ((i + j) % 4) * 0.1;
+        const arcAlt = 0.12 + ((i + j) % 4) * 0.08;
 
         arcs.push({
           order: order++,
@@ -85,9 +83,9 @@ export function GlobeSection({
           color,
         });
 
-        if (arcs.length >= 14) break; // Keep visual clutter optimal
+        if (arcs.length >= 12) break;
       }
-      if (arcs.length >= 14) break;
+      if (arcs.length >= 12) break;
     }
 
     return arcs;
@@ -95,23 +93,23 @@ export function GlobeSection({
 
   const globeConfig: GlobeConfig = useMemo(
     () => ({
-      pointSize: 1.2,
-      globeColor: "#050914",
+      pointSize: 1.0,
+      globeColor: "#080c14",
       showAtmosphere: true,
-      atmosphereColor: "#38bdf8",
-      atmosphereAltitude: 0.18,
-      emissive: "#02040a",
-      emissiveIntensity: 0.1,
-      shininess: 0.9,
-      polygonColor: "rgba(255, 255, 255, 0.7)",
-      ambientLight: "#38bdf8",
-      directionalLeftLight: "#818cf8",
-      directionalTopLight: "#ffffff",
-      pointLight: "#6366f1",
-      arcTime: 2000,
-      arcLength: 0.75,
-      rings: 2,
-      maxRings: 3,
+      atmosphereColor: "#334155",
+      atmosphereAltitude: 0.08,
+      emissive: "#05070a",
+      emissiveIntensity: 0.05,
+      shininess: 0.3,
+      polygonColor: "rgba(100, 116, 139, 0.4)",
+      ambientLight: "#e2e8f0",
+      directionalLeftLight: "#94a3b8",
+      directionalTopLight: "#cbd5e1",
+      pointLight: "#e2e8f0",
+      arcTime: 2200,
+      arcLength: 0.8,
+      rings: 1,
+      maxRings: 2,
       autoRotate,
       autoRotateSpeed: rotationSpeed,
     }),
@@ -120,7 +118,7 @@ export function GlobeSection({
 
   return (
     <div
-      className="glass-card"
+      className="soc-card"
       style={{
         position: "relative",
         height: "600px",
@@ -129,13 +127,13 @@ export function GlobeSection({
         flexDirection: "column",
       }}
     >
-      {/* Globe Top HUD / Header */}
+      {/* Globe Top Tactical HUD */}
       <div
         style={{
           position: "absolute",
-          top: "18px",
-          left: "24px",
-          right: "24px",
+          top: "16px",
+          left: "20px",
+          right: "20px",
           zIndex: 10,
           display: "flex",
           justifyContent: "space-between",
@@ -144,94 +142,102 @@ export function GlobeSection({
         }}
       >
         <div>
-          <h2
-            style={{
-              fontSize: "1.1rem",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              color: "var(--text-primary)",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span
-              className="pulse-dot"
               style={{
-                width: 8,
-                height: 8,
+                width: 6,
+                height: 6,
                 borderRadius: "50%",
-                background: "#f43f5e",
+                background: "#ef4444",
                 display: "inline-block",
               }}
             />
-            Live Global DDoS Vectors
-          </h2>
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
-            Real-time volumetric attack telemetry & geographic propagation
+            <h2
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                color: "#f1f5f9",
+                fontFamily: "'JetBrains Mono', monospace",
+                textTransform: "uppercase",
+              }}
+            >
+              GEO-SPATIAL ATTACK TELEMETRY
+            </h2>
+          </div>
+          <p
+            style={{
+              fontSize: "0.7rem",
+              color: "#64748b",
+              fontFamily: "'JetBrains Mono', monospace",
+              marginTop: "2px",
+            }}
+          >
+            ACTIVE_ARCS: {globeArcs.length} | SAMPLING: COUNTRY_LEVEL_AGGREGATE
           </p>
         </div>
 
-        {/* Controls Overlay */}
+        {/* Tactical Controls */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
             gap: "8px",
             pointerEvents: "auto",
-            background: "rgba(15, 23, 42, 0.75)",
-            backdropFilter: "blur(8px)",
-            padding: "4px 10px",
-            borderRadius: "8px",
-            border: "1px solid var(--border-primary)",
+            background: "#0e131d",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            border: "1px solid #1e2636",
           }}
         >
           <button
             onClick={() => setAutoRotate(!autoRotate)}
             style={{
-              background: autoRotate ? "rgba(99, 102, 241, 0.2)" : "transparent",
-              color: autoRotate ? "#818cf8" : "var(--text-muted)",
+              background: autoRotate ? "#161e2e" : "transparent",
+              color: autoRotate ? "#cbd5e1" : "#64748b",
               border: "1px solid",
-              borderColor: autoRotate ? "rgba(99, 102, 241, 0.4)" : "transparent",
-              borderRadius: "6px",
-              padding: "4px 8px",
-              fontSize: "0.7rem",
+              borderColor: autoRotate ? "#2e3b52" : "transparent",
+              borderRadius: "3px",
+              padding: "3px 8px",
+              fontSize: "0.68rem",
+              fontFamily: "'JetBrains Mono', monospace",
               fontWeight: 600,
               cursor: "pointer",
             }}
           >
-            {autoRotate ? "Auto-Rotate: ON" : "Auto-Rotate: OFF"}
+            ROTATE: {autoRotate ? "ON" : "OFF"}
           </button>
 
           <button
-            onClick={() => setRotationSpeed((s) => (s >= 1.5 ? 0.4 : s + 0.4))}
+            onClick={() => setRotationSpeed((s) => (s >= 1.0 ? 0.2 : s + 0.2))}
             style={{
               background: "transparent",
-              color: "var(--text-secondary)",
+              color: "#94a3b8",
               border: "none",
-              padding: "4px 8px",
-              fontSize: "0.7rem",
+              padding: "3px 8px",
+              fontSize: "0.68rem",
+              fontFamily: "'JetBrains Mono', monospace",
               fontWeight: 600,
               cursor: "pointer",
             }}
           >
-            {rotationSpeed.toFixed(1)}x
+            {rotationSpeed.toFixed(1)}X
           </button>
         </div>
       </div>
 
-      {/* 3D Canvas Container */}
+      {/* 3D Canvas */}
       <div style={{ flex: 1, width: "100%", height: "100%", minHeight: "500px" }}>
         <World globeConfig={globeConfig} data={globeArcs} />
       </div>
 
-      {/* Globe Bottom HUD / Legend */}
+      {/* Bottom HUD Legend */}
       <div
         style={{
           position: "absolute",
-          bottom: "16px",
-          left: "24px",
-          right: "24px",
+          bottom: "14px",
+          left: "20px",
+          right: "20px",
           zIndex: 10,
           display: "flex",
           justifyContent: "space-between",
@@ -245,41 +251,46 @@ export function GlobeSection({
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "16px",
-            background: "rgba(15, 23, 42, 0.75)",
-            backdropFilter: "blur(8px)",
-            padding: "6px 14px",
-            borderRadius: "8px",
-            border: "1px solid var(--border-primary)",
+            gap: "14px",
+            background: "#0e131d",
+            padding: "5px 12px",
+            borderRadius: "4px",
+            border: "1px solid #1e2636",
             pointerEvents: "auto",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#f43f5e" }} />
-            <span style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>High Intensity</span>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444" }} />
+            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "'JetBrains Mono', monospace" }}>
+              CRITICAL VECTOR
+            </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#f59e0b" }} />
-            <span style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Medium Vector</span>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#f59e0b" }} />
+            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "'JetBrains Mono', monospace" }}>
+              ELEVATED FLOW
+            </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#06b6d4" }} />
-            <span style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>Standard Flow</span>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#94a3b8" }} />
+            <span style={{ fontSize: "0.68rem", color: "#94a3b8", fontFamily: "'JetBrains Mono', monospace" }}>
+              STANDARD TELEMETRY
+            </span>
           </div>
         </div>
 
         <div
           style={{
-            fontSize: "0.7rem",
-            color: "var(--text-muted)",
-            background: "rgba(15, 23, 42, 0.75)",
-            backdropFilter: "blur(8px)",
-            padding: "6px 14px",
-            borderRadius: "8px",
-            border: "1px solid var(--border-primary)",
+            fontSize: "0.68rem",
+            color: "#64748b",
+            background: "#0e131d",
+            padding: "5px 12px",
+            borderRadius: "4px",
+            border: "1px solid #1e2636",
+            fontFamily: "'JetBrains Mono', monospace",
           }}
         >
-          Drag to rotate • Click & drag controls active
+          ORBIT_CONTROLS: DRAG TO PAN // PASSIVE ROTATION
         </div>
       </div>
     </div>

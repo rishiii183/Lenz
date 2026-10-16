@@ -7,7 +7,6 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { motion } from "framer-motion";
 import type { TimeSeriesData } from "@/types";
 
 interface TimeSeriesChartProps {
@@ -37,13 +36,13 @@ export function TimeSeriesChart({
   });
 
   return (
-    <div className="glass-card" style={{ padding: "20px 24px", height: "100%", display: "flex", flexDirection: "column" }}>
+    <div className="soc-card" style={{ padding: "16px 20px", height: "100%", display: "flex", flexDirection: "column" }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "16px",
+          marginBottom: "14px",
           flexWrap: "wrap",
           gap: "10px",
         }}
@@ -51,9 +50,12 @@ export function TimeSeriesChart({
         <div>
           <h3
             style={{
-              fontSize: "1rem",
-              fontWeight: 600,
-              color: "var(--text-primary)",
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              color: "#f1f5f9",
+              letterSpacing: "0.06em",
+              fontFamily: "'JetBrains Mono', monospace",
+              textTransform: "uppercase",
               display: "flex",
               alignItems: "center",
               gap: "8px",
@@ -61,27 +63,27 @@ export function TimeSeriesChart({
           >
             <span
               style={{
-                width: 8,
-                height: 8,
+                width: 6,
+                height: 6,
                 borderRadius: "50%",
-                background: "var(--accent-cyan)",
+                background: "#cbd5e1",
               }}
             />
-            DDoS Attack Activity Over Time
+            VOLUMETRIC ATTACK TRENDS
           </h3>
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
-            {data?.metric || "Normalized Attack Traffic Intensity"} ({data?.unit || "% of total traffic"})
+          <p style={{ fontSize: "0.7rem", color: "#64748b", fontFamily: "'JetBrains Mono', monospace", marginTop: "2px" }}>
+            METRIC: {data?.metric || "NORMALIZED_DDOS_INTENSITY"} ({data?.unit || "% OF INGESTION"})
           </p>
         </div>
 
-        {/* Range Selector */}
+        {/* Tactical Range Selector */}
         <div
           style={{
             display: "flex",
-            background: "rgba(15, 23, 42, 0.8)",
-            padding: "3px",
-            borderRadius: "8px",
-            border: "1px solid var(--border-primary)",
+            background: "#080c14",
+            padding: "2px",
+            borderRadius: "4px",
+            border: "1px solid #1e2636",
           }}
         >
           {["24h", "7d", "28d"].map((range) => (
@@ -89,15 +91,17 @@ export function TimeSeriesChart({
               key={range}
               onClick={() => onRangeChange(range)}
               style={{
-                background: activeRange === range ? "var(--accent-primary)" : "transparent",
-                color: activeRange === range ? "#ffffff" : "var(--text-secondary)",
-                border: "none",
-                borderRadius: "6px",
-                padding: "4px 12px",
-                fontSize: "0.75rem",
+                background: activeRange === range ? "#1a2232" : "transparent",
+                color: activeRange === range ? "#f1f5f9" : "#64748b",
+                border: "1px solid",
+                borderColor: activeRange === range ? "#2d3a52" : "transparent",
+                borderRadius: "3px",
+                padding: "3px 10px",
+                fontSize: "0.68rem",
+                fontFamily: "'JetBrains Mono', monospace",
                 fontWeight: 600,
                 cursor: "pointer",
-                transition: "all 0.2s ease",
+                transition: "all 0.15s ease",
               }}
             >
               {range.toUpperCase()}
@@ -106,11 +110,11 @@ export function TimeSeriesChart({
         </div>
       </div>
 
-      <div style={{ flex: 1, minHeight: 220, position: "relative" }}>
+      <div style={{ flex: 1, minHeight: 200, position: "relative" }}>
         {loading ? (
           <div
             className="skeleton"
-            style={{ width: "100%", height: "100%", minHeight: 220 }}
+            style={{ width: "100%", height: "100%", minHeight: 200 }}
           />
         ) : chartData.length === 0 ? (
           <div
@@ -119,31 +123,34 @@ export function TimeSeriesChart({
               alignItems: "center",
               justifyContent: "center",
               height: "100%",
-              color: "var(--text-muted)",
-              fontSize: "0.85rem",
+              color: "#64748b",
+              fontSize: "0.75rem",
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
-            No time-series data available for this range
+            NO DATA POINTS IN SELECTED RANGE
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={240}>
-            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <ResponsiveContainer width="100%" height={210}>
+            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
               <defs>
-                <linearGradient id="ddosGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0.0} />
+                <linearGradient id="coldSteelGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="#94a3b8" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
+              <CartesianGrid strokeDasharray="2 2" stroke="#161e2c" vertical={false} />
               <XAxis
                 dataKey="label"
-                stroke="var(--text-muted)"
-                fontSize={11}
+                stroke="#475569"
+                fontSize={10}
+                fontFamily="'JetBrains Mono', monospace"
                 tickLine={false}
               />
               <YAxis
-                stroke="var(--text-muted)"
-                fontSize={11}
+                stroke="#475569"
+                fontSize={10}
+                fontFamily="'JetBrains Mono', monospace"
                 tickLine={false}
                 tickFormatter={(val) => `${val}%`}
               />
@@ -154,26 +161,26 @@ export function TimeSeriesChart({
                     return (
                       <div
                         style={{
-                          background: "rgba(15, 23, 42, 0.95)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid var(--border-glow)",
-                          borderRadius: "8px",
-                          padding: "8px 12px",
-                          boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                          background: "#0a0e17",
+                          border: "1px solid #28354b",
+                          borderRadius: "4px",
+                          padding: "6px 10px",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.6)",
+                          fontFamily: "'JetBrains Mono', monospace",
                         }}
                       >
-                        <p style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                        <p style={{ fontSize: "0.68rem", color: "#64748b" }}>
                           {item.timestamp}
                         </p>
                         <p
                           style={{
-                            fontSize: "0.9rem",
+                            fontSize: "0.82rem",
                             fontWeight: 700,
-                            color: "#818cf8",
+                            color: "#f1f5f9",
                             marginTop: "2px",
                           }}
                         >
-                          {item.value}% DDoS Attack Share
+                          {item.value}% ATTACK SHARE
                         </p>
                       </div>
                     );
@@ -184,10 +191,10 @@ export function TimeSeriesChart({
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="#6366f1"
-                strokeWidth={2}
+                stroke="#cbd5e1"
+                strokeWidth={1.5}
                 fillOpacity={1}
-                fill="url(#ddosGradient)"
+                fill="url(#coldSteelGradient)"
               />
             </AreaChart>
           </ResponsiveContainer>

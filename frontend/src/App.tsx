@@ -45,73 +45,65 @@ export function App() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      {/* Top Header */}
+      {/* Top Tactical Command Header */}
       <Header dataStatus={dataStatus} loading={statusLoading} />
 
-      {/* Main Container */}
+      {/* Main SOC Dashboard */}
       <main style={{ flex: 1, maxWidth: "1600px", margin: "0 auto", width: "100%" }}>
-        {/* KPI Cards Row */}
+        {/* KPI Telemetry Row */}
         <section className="dashboard-grid">
           <KPICard
-            title="DDoS Traffic Ratio"
+            title="DDoS TRAFFIC RATIO"
             value={
               summary?.total_attack_percentage != null
                 ? `${summary.total_attack_percentage.toFixed(1)}%`
                 : "N/A"
             }
             subtitle="Observed global malicious traffic share"
-            icon={<ShieldIcon color="#6366f1" />}
-            variant="indigo"
-            delay={0.05}
+            icon={<ShieldIcon />}
             loading={summaryLoading}
           />
 
           <KPICard
-            title="Top Attack Origin"
+            title="PRIMARY ATTACK ORIGIN"
             value={topOrigin?.country_name || topOrigin?.country_code || "Unknown"}
             subtitle={
               topOrigin
-                ? `${topOrigin.value.toFixed(1)}% of total outbound attacks`
+                ? `${topOrigin.value.toFixed(1)}% of total outbound vectors`
                 : undefined
             }
-            icon={<GlobeIcon color="#f59e0b" />}
-            variant="amber"
-            delay={0.1}
+            icon={<GlobeIcon />}
             loading={summaryLoading}
           />
 
           <KPICard
-            title="Primary Target Region"
+            title="PRIMARY INGRESS TARGET"
             value={topTarget?.country_name || topTarget?.country_code || "Unknown"}
             subtitle={
               topTarget
                 ? `${topTarget.value.toFixed(1)}% of inbound attack traffic`
                 : undefined
             }
-            icon={<ActivityIcon color="#f43f5e" />}
-            variant="rose"
-            delay={0.15}
+            icon={<ActivityIcon />}
             loading={summaryLoading}
           />
 
           <KPICard
-            title="Dominant Attack Vector"
+            title="DOMINANT VECTOR"
             value={dominantProtocol ? dominantProtocol[0].toUpperCase() : "N/A"}
             subtitle={
               dominantProtocol
                 ? `${dominantProtocol[1].toFixed(1)}% of volumetric floods`
                 : undefined
             }
-            icon={<ZapIcon color="#06b6d4" />}
-            variant="cyan"
-            delay={0.2}
+            icon={<ZapIcon />}
             loading={summaryLoading}
           />
         </section>
 
-        {/* Primary Interactive Map & Analytics Grid */}
+        {/* Primary Interactive Map & Vector Analytics Grid */}
         <section className="main-grid">
-          {/* Left Column: Aceternity GitHub 3D Globe */}
+          {/* Left Column: 3D Tactical Globe */}
           <div>
             <GlobeSection
               originCountries={
@@ -124,8 +116,8 @@ export function App() {
             />
           </div>
 
-          {/* Right Column: TimeSeries & Protocol Charts */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          {/* Right Column: TimeSeries Trend & Protocol Breakdown */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <TimeSeriesChart
               data={timeseries}
               loading={tsLoading}
@@ -139,8 +131,8 @@ export function App() {
           </div>
         </section>
 
-        {/* Secondary Row: Regional Detail Table */}
-        <section style={{ padding: "0 24px 32px" }}>
+        {/* Regional Telemetry Table */}
+        <section style={{ padding: "0 24px 24px" }}>
           <RegionsTable
             originRegions={
               regions?.origin_regions || summary?.top_origin_countries || []
@@ -153,12 +145,12 @@ export function App() {
         </section>
       </main>
 
-      {/* Global Dashboard Footer */}
+      {/* Cold Tactical Footer */}
       <footer
         style={{
           borderTop: "1px solid var(--border-primary)",
-          background: "rgba(3, 7, 18, 0.8)",
-          padding: "20px 24px",
+          background: "#080b11",
+          padding: "14px 24px",
           marginTop: "auto",
         }}
       >
@@ -171,48 +163,50 @@ export function App() {
             alignItems: "center",
             flexWrap: "wrap",
             gap: "12px",
-            fontSize: "0.75rem",
-            color: "var(--text-muted)",
+            fontSize: "0.72rem",
+            color: "#64748b",
+            fontFamily: "'JetBrains Mono', monospace",
           }}
         >
           <div>
-            ThreatLens DDoS Intelligence • Built with FastAPI, Three.js, and Cloudflare Radar
+            THREATLENS // CYBERSECURITY TELEMETRY PLATFORM • INGESTION: CLOUDFLARE_RADAR_REST_V4
           </div>
 
           <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
             <button
               onClick={handleRefreshAll}
               style={{
-                background: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid var(--border-primary)",
-                color: "var(--text-secondary)",
-                borderRadius: "6px",
-                padding: "4px 10px",
+                background: "#0e131d",
+                border: "1px solid #1e2636",
+                color: "#94a3b8",
+                borderRadius: "3px",
+                padding: "3px 10px",
                 cursor: "pointer",
-                fontSize: "0.72rem",
+                fontSize: "0.68rem",
+                fontFamily: "'JetBrains Mono', monospace",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "5px",
               }}
             >
-              <span>↻</span> Refresh Telemetry
+              <span>[SYNC]</span> REFRESH TELEMETRY
             </button>
 
             <a
               href="https://radar.cloudflare.com"
               target="_blank"
               rel="noreferrer"
-              style={{ color: "var(--accent-cyan)", textDecoration: "none" }}
+              style={{ color: "#94a3b8", textDecoration: "none" }}
             >
-              Radar Portal ↗
+              RADAR_PORTAL ↗
             </a>
             <a
               href="http://localhost:8000/docs"
               target="_blank"
               rel="noreferrer"
-              style={{ color: "var(--accent-primary)", textDecoration: "none" }}
+              style={{ color: "#94a3b8", textDecoration: "none" }}
             >
-              Backend API Docs ↗
+              API_SCHEMA ↗
             </a>
           </div>
         </div>

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import type { DataStatus } from "@/types";
 
 interface HeaderProps {
@@ -7,24 +6,23 @@ interface HeaderProps {
 }
 
 export function Header({ dataStatus, loading }: HeaderProps) {
-  const status = dataStatus?.status ?? "loading";
+  const status = dataStatus?.status ?? (loading ? "loading" : "demo");
   const isSimulated = dataStatus?.is_simulated ?? true;
 
   const statusConfig: Record<string, { label: string; class: string }> = {
-    live: { label: "LIVE DATA", class: "status-live" },
-    demo: { label: "DEMO DATA", class: "status-demo" },
-    stale: { label: "STALE DATA", class: "status-stale" },
-    error: { label: "ERROR", class: "status-error" },
-    loading: { label: "LOADING", class: "status-demo" },
+    live: { label: "RADAR // INGESTION ACTIVE", class: "status-live" },
+    demo: { label: "DEMO // SYNTHESIZED STREAM", class: "status-demo" },
+    stale: { label: "CACHE // STALE REVALIDATION", class: "status-stale" },
+    error: { label: "OFFLINE // CONNECTION ERR", class: "status-error" },
+    loading: { label: "CONNECTING // TELEMETRY", class: "status-demo" },
   };
 
-  const { label, class: badgeClass } = statusConfig[status] || statusConfig.loading;
+  const { label, class: pillClass } = statusConfig[status] || statusConfig.demo;
 
   return (
     <header
       style={{
-        background: "linear-gradient(180deg, rgba(3,7,18,0.95) 0%, rgba(3,7,18,0.6) 100%)",
-        backdropFilter: "blur(12px)",
+        background: "#090c13",
         borderBottom: "1px solid var(--border-primary)",
         position: "sticky",
         top: 0,
@@ -35,7 +33,7 @@ export function Header({ dataStatus, loading }: HeaderProps) {
         style={{
           maxWidth: "1600px",
           margin: "0 auto",
-          padding: "16px 24px",
+          padding: "12px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -43,122 +41,116 @@ export function Header({ dataStatus, loading }: HeaderProps) {
           gap: "12px",
         }}
       >
-        {/* Logo & Title */}
-        <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+        {/* Brand & System Designation */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div
             style={{
-              width: 42,
-              height: 42,
-              borderRadius: "12px",
-              background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+              width: 34,
+              height: 34,
+              borderRadius: "4px",
+              background: "#121722",
+              border: "1px solid #232c3d",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 0 20px rgba(99, 102, 241, 0.3)",
+              color: "#cbd5e1",
             }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              <path d="M2 12h20" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
-          </motion.div>
+          </div>
           <div>
-            <motion.h1
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.06em",
+                  color: "#f8fafc",
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}
+              >
+                THREATLENS
+              </span>
+              <span
+                style={{
+                  fontSize: "0.65rem",
+                  padding: "1px 6px",
+                  borderRadius: "2px",
+                  background: "#161d2b",
+                  border: "1px solid #283347",
+                  color: "#94a3b8",
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}
+              >
+                v1.4.2
+              </span>
+            </div>
+            <p
               style={{
-                fontSize: "1.4rem",
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                lineHeight: 1.2,
-              }}
-              className="gradient-text"
-            >
-              ThreatLens
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              style={{
-                fontSize: "0.75rem",
-                color: "var(--text-muted)",
+                fontSize: "0.72rem",
+                color: "#64748b",
+                fontFamily: "'JetBrains Mono', monospace",
                 letterSpacing: "0.02em",
               }}
             >
-              Global DDoS Threat Intelligence
-            </motion.p>
+              GLOBAL DDOS THREAT INTELLIGENCE & TELEMETRY
+            </p>
           </div>
         </div>
 
-        {/* Status & Source */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <span className={`status-badge ${badgeClass}`}>
-              <span
-                className="pulse-dot"
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  backgroundColor: "currentColor",
-                  display: "inline-block",
-                }}
-              />
-              {label}
-            </span>
-          </motion.div>
+        {/* Telemetry Status Controls */}
+        <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
+          <span className={`status-pill ${pillClass}`}>
+            <span className="status-indicator-dot" />
+            {label}
+          </span>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}
+          <div
+            style={{
+              fontSize: "0.72rem",
+              fontFamily: "'JetBrains Mono', monospace",
+              color: "#64748b",
+              borderLeft: "1px solid #1e2433",
+              paddingLeft: "14px",
+            }}
           >
-            <span>Source: </span>
+            FEED:{" "}
             <a
               href="https://developers.cloudflare.com/radar/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "var(--accent-cyan)", textDecoration: "none" }}
+              style={{ color: "#94a3b8", textDecoration: "none", fontWeight: 600 }}
             >
-              Cloudflare Radar
+              CLOUDFLARE_RADAR_L3_L7
             </a>
-          </motion.div>
+          </div>
 
           {dataStatus?.last_successful_fetch && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}
+            <div
+              style={{
+                fontSize: "0.72rem",
+                fontFamily: "'JetBrains Mono', monospace",
+                color: "#64748b",
+              }}
             >
-              Last fetch:{" "}
-              {new Date(dataStatus.last_successful_fetch).toLocaleTimeString()}
-            </motion.div>
+              SYNC: {new Date(dataStatus.last_successful_fetch).toLocaleTimeString()}
+            </div>
           )}
         </div>
       </div>
 
-      {/* Simulated data banner */}
+      {/* Professional Telemetry Notice Bar */}
       {isSimulated && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{ padding: "0 24px 12px" }}
-        >
-          <div className="simulated-banner">
-            ⚠️ SIMULATED DEMO DATA — Configure a Cloudflare Radar API token for real data
+        <div style={{ padding: "0 24px 10px" }}>
+          <div className="notice-banner">
+            <span>
+              [SOURCE: SYNTHESIZED TELEMETRY ENGINE] Configure CLOUDFLARE_API_TOKEN in backend/.env for live edge ingestion.
+            </span>
+            <span style={{ color: "#94a3b8", fontSize: "0.68rem" }}>FAILSAFE_MODE_ENABLED</span>
           </div>
-        </motion.div>
+        </div>
       )}
     </header>
   );
